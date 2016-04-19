@@ -1,0 +1,221 @@
+package projetoArvore;
+
+public class BinaryTree {
+
+	private BinaryNode root;
+
+	public void add(int info) { // Adicionar um no a arvore binaria ordenada
+		BinaryNode newNode = new BinaryNode(info); // Cria um no com o valor
+													// recebido
+
+		if (root == null) { // Verifica se a raiz esta vazia
+			root = newNode; // Caso esteja, o no sera a raiz
+			System.out.println("Raiz adicionada");
+		} else {// Caso nao esteja vazia
+			BinaryNode aux = root; // Cria um no aux para percorrer a arvore
+			while ((aux != null) && (aux.getInfo() != info)) { // Verfica se o
+																// no aux e
+																// vazio e se a
+																// info ja
+																// existe na
+																// arvore
+				if (info < aux.getInfo()) { // Verifica se o no inserido e menor
+											// que a raiz
+					if (aux.getLeft() == null) { // Verifica se o no a esquerda
+													// esta vazio
+						aux.setLeft(newNode); // Caso seja entao sera adicionado
+												// a esquerda da raiz
+						System.out.println("Adicionado a esquerda");
+						break;
+					} else {// Caso nao esteja vazio
+						aux = aux.getLeft();// Aponta o no aux para o no a
+											// esquerda da raiz
+						System.out.println("Entrou left else");
+					}
+				} else {// No inserido e maior que a raiz
+					if (aux.getRight() == null) { // Verifica se o no a direita
+													// esta vazio
+						aux.setRight(newNode);// Caso esteja entao sera
+												// adicionado a direita da raiz
+						System.out.println("Adicionado a direita");
+						break;
+					} else {// Caso nao esteja vazio
+						aux = aux.getRight();// Aponta o no aux para o no a
+												// direita da raiz
+						System.out.println("Entrou right else");
+					}
+				}
+			}
+		}
+	}
+
+	public BinaryNode removalProcess(BinaryNode root) {
+		BinaryNode father, aux;
+		father = root;
+		aux = root.getLeft();
+		while (aux.getRight() != null) {
+			father = aux;
+			aux = aux.getRight();
+		}
+		root.setInfo(aux.getInfo());
+		father.setRight(aux.getLeft());
+		return root;
+	}
+
+	public BinaryNode remove(int info) {
+		if (root == null) {
+			return null;
+		} else if (root.getInfo() == info) {
+			if (root.getLeft() == null) {
+				return root.getRight();
+			} else {return removalProcess(root);				
+			}
+		} else {
+			BinaryNode father, aux;
+			father = aux = root;
+			while (aux != null && aux.getInfo() != info) {
+				father = aux;
+				if (info > aux.getInfo()) {
+					aux = aux.getRight();
+				} else {
+					aux = aux.getLeft();
+				}
+			}
+			if (aux != null && father != null) {
+				if (father.getLeft() == aux) {
+					father.setLeft(removalProcess(aux));
+				} else {
+					father.setRight(removalProcess(aux));
+				}
+
+			}
+			return root;
+		}
+	}
+	
+	/*public BinaryNode remove(BinaryNode root, int info) {
+		if (root == null) {
+			return null;
+		} else if (root.getInfo() == info) {
+			if (root.getLeft() == null) {
+				return root.getRight();
+			} else {
+				// removalProcess(root);
+				BinaryNode father, aux;
+				father = root;
+				aux = root.getLeft();
+				while (aux.getRight() != null) {
+					father = aux;
+					aux = aux.getRight();
+				}
+				root.setInfo(aux.getInfo());
+				father.setRight(aux.getLeft());
+				return root;
+			}
+		} else {
+			BinaryNode father, aux;
+			father = aux = root;
+			while (aux != null && aux.getInfo() != info) {
+				father = aux;
+				if (info > aux.getInfo()) {
+					aux = aux.getRight();
+				} else {
+					aux = aux.getLeft();
+				}
+			}
+			if (aux != null && father != null) {
+				if (father.getLeft() == aux) {
+					father.setLeft(removalProcess(aux));
+				} else {
+					father.setRight(removalProcess(aux));
+				}
+
+			}
+			return root;
+		}
+	}*/
+
+	public BinaryNode search(int info) {
+
+		if (this.exist(info)) {
+			BinaryNode aux = root; // Aponta o no aux para a raiz
+			while (aux != null) { // Verifica se o aux nao e nulo
+				if (aux.getInfo() == info) { // Caso o valor do aux seja igual
+												// ao
+												// valor recebido
+					return aux;
+				} else {
+					if (info < aux.getInfo()) { // Verifica se o valor recebido
+												// e
+												// menor que o valor do aux
+						aux = aux.getLeft(); // Se for, entao aponta o aux para
+												// a
+												// esquerda do aux anterior
+					} else {
+						aux = aux.getRight();// Caso contrario, aponta o aux
+												// para a
+												// direita do aux anterior
+					}
+				}
+			}
+
+		}
+		return null;
+	}
+
+	public boolean exist(int info) { // Metodo para verificar se o no existe na
+										// arvore
+		BinaryNode aux = root; // Aponta o no aux para a raiz
+		while (aux != null) { // Verifica se o aux nao e nulo
+			if (aux.getInfo() == info) { // Caso o valor do aux seja igual ao
+											// valor recebido
+				return true;
+			} else {
+				if (info < aux.getInfo()) { // Verifica se o valor recebido e
+											// menor que o valor do aux
+					aux = aux.getLeft(); // Se for, entao aponta o aux para a
+											// esquerda do aux anterior
+				} else {
+					aux = aux.getRight();// Caso contrario, aponta o aux para a
+											// direita do aux anterior
+				}
+			}
+		}
+		return false;
+
+	}
+
+	public static void main(String[] Args) {
+		BinaryTree bt = new BinaryTree();
+		bt.add(0);
+
+		bt.add(10);
+
+		bt.add(5);
+
+		bt.add(-8);
+
+		bt.add(-15);
+
+		bt.add(2);
+
+		bt.add(0);
+
+		bt.add(12);
+
+		bt.add(-6);
+
+		bt.add(6);
+		
+		System.out.println(bt.remove(2));
+
+		System.out.println(bt.exist(-15));
+		System.out.println(bt.exist(2));
+		System.out.println(bt.search(5));
+		
+		
+		
+
+	}
+
+}
