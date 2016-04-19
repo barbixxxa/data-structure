@@ -1,0 +1,39 @@
+package projetoArvore;
+
+public class BinaryNode {
+
+	private int info;
+	private BinaryNode left, right;
+
+	public BinaryNode(int info) {
+		this.info = info;
+		this.left = null;
+		this.right = null;
+	}
+
+	public int getInfo() {
+		return info;
+	}
+
+	public void setInfo(int info) {
+		this.info = info;
+	}
+
+	public BinaryNode getLeft() {
+		return left;
+	}
+
+	public void setLeft(BinaryNode left) {
+		this.left = left;
+	}
+
+	public BinaryNode getRight() {
+		return right;
+	}
+
+	public void setRight(BinaryNode right) {
+		this.right = right;
+	}
+	
+	
+}
