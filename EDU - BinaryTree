@@ -4,7 +4,11 @@ public class BinaryTree {
 
 	private BinaryNode root;
 
-	public void add(int info) { // Adicionar um no a arvore binaria ordenada
+	public void add(int info) {
+
+		/**
+		 * Metodo para adicionar um no a arvore binaria ordenada
+		 */
 		BinaryNode newNode = new BinaryNode(info); // Cria um no com o valor
 													// recebido
 
@@ -49,93 +53,10 @@ public class BinaryTree {
 		}
 	}
 
-	public BinaryNode removalProcess(BinaryNode root) {
-		BinaryNode father, aux;
-		father = root;
-		aux = root.getLeft();
-		while (aux.getRight() != null) {
-			father = aux;
-			aux = aux.getRight();
-		}
-		root.setInfo(aux.getInfo());
-		father.setRight(aux.getLeft());
-		return root;
-	}
-
-	public BinaryNode remove(int info) {
-		if (root == null) {
-			return null;
-		} else if (root.getInfo() == info) {
-			if (root.getLeft() == null) {
-				return root.getRight();
-			} else {return removalProcess(root);				
-			}
-		} else {
-			BinaryNode father, aux;
-			father = aux = root;
-			while (aux != null && aux.getInfo() != info) {
-				father = aux;
-				if (info > aux.getInfo()) {
-					aux = aux.getRight();
-				} else {
-					aux = aux.getLeft();
-				}
-			}
-			if (aux != null && father != null) {
-				if (father.getLeft() == aux) {
-					father.setLeft(removalProcess(aux));
-				} else {
-					father.setRight(removalProcess(aux));
-				}
-
-			}
-			return root;
-		}
-	}
-	
-	/*public BinaryNode remove(BinaryNode root, int info) {
-		if (root == null) {
-			return null;
-		} else if (root.getInfo() == info) {
-			if (root.getLeft() == null) {
-				return root.getRight();
-			} else {
-				// removalProcess(root);
-				BinaryNode father, aux;
-				father = root;
-				aux = root.getLeft();
-				while (aux.getRight() != null) {
-					father = aux;
-					aux = aux.getRight();
-				}
-				root.setInfo(aux.getInfo());
-				father.setRight(aux.getLeft());
-				return root;
-			}
-		} else {
-			BinaryNode father, aux;
-			father = aux = root;
-			while (aux != null && aux.getInfo() != info) {
-				father = aux;
-				if (info > aux.getInfo()) {
-					aux = aux.getRight();
-				} else {
-					aux = aux.getLeft();
-				}
-			}
-			if (aux != null && father != null) {
-				if (father.getLeft() == aux) {
-					father.setLeft(removalProcess(aux));
-				} else {
-					father.setRight(removalProcess(aux));
-				}
-
-			}
-			return root;
-		}
-	}*/
-
 	public BinaryNode search(int info) {
+		/**
+		 * Metodo para encontrar o no desejado
+		 */
 
 		if (this.exist(info)) {
 			BinaryNode aux = root; // Aponta o no aux para a raiz
@@ -163,8 +84,11 @@ public class BinaryTree {
 		return null;
 	}
 
-	public boolean exist(int info) { // Metodo para verificar se o no existe na
-										// arvore
+	public boolean exist(int info) {
+		/**
+		 * Metodo para verificar se o no existe na arvore
+		 * 
+		 */
 		BinaryNode aux = root; // Aponta o no aux para a raiz
 		while (aux != null) { // Verifica se o aux nao e nulo
 			if (aux.getInfo() == info) { // Caso o valor do aux seja igual ao
@@ -185,36 +109,111 @@ public class BinaryTree {
 
 	}
 
+	public BinaryNode remove(int info) {
+		if (root == null) {
+			return null;
+		} else if (root.getInfo() == info) {
+			if (root.getLeft() == null) { // return ou root = root.getright( ) ?
+				return root.getRight();
+			} else {
+				this.removalProcess(root); // realiza o processo apartir da raiz
+			}
+		} else {
+			// this.search(info); tentar fazer com o metodo search dps
+			BinaryNode father, aux;
+			aux = root;
+			father = aux;
+			while (aux != null && aux.getInfo() != info) {
+				father = aux;
+				if (info > aux.getInfo()) {
+					aux = aux.getRight();
+				} else {
+					aux = aux.getLeft();
+				}
+			}
+			if (aux != null && father != null) {
+				if (father.getLeft() == aux) {
+					father.setLeft(this.removalProcess(aux));
+				} else {
+					father.setRight(this.removalProcess(aux));
+				}
+			}
+		}
+		return root;
+	}
+
+	public BinaryNode removalProcess(BinaryNode node) {
+		BinaryNode father, aux;
+		father = node;
+		aux = father.getLeft();
+		if (aux != null) {
+			while (aux.getRight() != null) {
+				father = aux;
+				aux = aux.getRight();
+			}
+			node.setInfo(aux.getInfo());
+			// father.setRight(aux.getLeft()); desnecessario
+		} else {
+			node = null;
+		}
+
+		return node;
+	}
+
 	public static void main(String[] Args) {
 		BinaryTree bt = new BinaryTree();
 		bt.add(0);
-
 		bt.add(10);
-
-		bt.add(5);
-
 		bt.add(-8);
-
 		bt.add(-15);
-
-		bt.add(2);
-
-		bt.add(0);
-
-		bt.add(12);
-
 		bt.add(-6);
-
+		bt.add(5);
+		bt.add(0);
+		bt.add(12);
+		bt.add(-20);
+		bt.add(-10);
+		bt.add(-7);
+		bt.add(-4);
+		bt.add(2);
+		bt.add(8);
+		bt.add(11);
+		bt.add(13);
+		bt.add(-5);
+		bt.add(-2);
+		bt.add(1);
+		bt.add(3);
 		bt.add(6);
-		
-		System.out.println(bt.remove(2));
+		bt.add(9);
+		bt.add(-3);
+		bt.add(-1);
 
+		System.out.println(bt.remove(5));
+
+		System.out.println(bt.exist(0));
+		System.out.println(bt.exist(10));
+		System.out.println(bt.exist(-8));
 		System.out.println(bt.exist(-15));
+		System.out.println(bt.exist(-6));
+		System.out.println(bt.exist(12));
 		System.out.println(bt.exist(2));
-		System.out.println(bt.search(5));
-		
-		
-		
+		System.out.println(bt.exist(6));
+		System.out.println(bt.exist(1));
+		System.out.println(bt.exist(3));
+		System.out.println(bt.exist(8));
+		System.out.println(bt.exist(9));
+		System.out.println(bt.exist(11));
+		System.out.println(bt.exist(13));
+		System.out.println(bt.exist(-20));
+		System.out.println(bt.exist(-10));
+		System.out.println(bt.exist(-7));
+		System.out.println(bt.exist(-5));
+		System.out.println(bt.exist(-1));
+		System.out.println(bt.exist(-2));
+		System.out.println(bt.exist(-3));
+		System.out.println(bt.exist(-4));
+		System.out.println(bt.exist(5));
+
+		System.out.println(bt.search(0));
 
 	}
 
