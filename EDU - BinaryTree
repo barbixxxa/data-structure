@@ -1,5 +1,7 @@
 package projetoArvore;
 
+import java.util.Scanner;
+
 public class BinaryTree {
 
 	private BinaryNode root;
@@ -114,7 +116,8 @@ public class BinaryTree {
 			return null;
 		} else if (root.getInfo() == info) {
 			if (root.getLeft() == null) { // return ou root = root.getright( ) ?
-				return root.getRight();
+				root = root.getRight();
+				return root;
 			} else {
 				this.removalProcess(root); // realiza o processo apartir da raiz
 			}
@@ -142,7 +145,7 @@ public class BinaryTree {
 		return root;
 	}
 
-	public BinaryNode removalProcess(BinaryNode node) {
+	private BinaryNode removalProcess(BinaryNode node) {
 		BinaryNode father, aux;
 		father = node;
 		aux = father.getLeft();
@@ -151,9 +154,8 @@ public class BinaryTree {
 				father = aux;
 				aux = aux.getRight();
 			}
-			node.setInfo(aux.getInfo());
-			node.setLeft(null);
-			//father.setRight(aux.getLeft()); 
+			node.setInfo(aux.getInfo());// TODO bugando aqui
+			father.setRight(aux.getLeft());
 		} else {
 			node = null;
 		}
@@ -173,63 +175,46 @@ public class BinaryTree {
 		}
 	}
 
-	public static void main(String[] Args) {
-		BinaryTree bt = new BinaryTree();
-		bt.add(0);
-		bt.add(10);
-		bt.add(-8);
-		bt.add(-15);
-		bt.add(-6);
-		bt.add(5);
-		bt.add(0);
-		bt.add(12);
-		bt.add(-20);
-		bt.add(-10);
-		bt.add(-7);
-		bt.add(-4);
-		bt.add(2);
-		bt.add(8);
-		bt.add(11);
-		bt.add(13);
-		bt.add(-5);
-		bt.add(-2);
-		bt.add(1);
-		bt.add(3);
-		bt.add(6);
-		bt.add(9);
-		bt.add(-3);
-		bt.add(-1);
+	public void organize() {
+		if (root != null) {
 
-		System.out.println(bt.remove(-4));
-
-		System.out.println(bt.exist(0));
-		System.out.println(bt.exist(10));
-		System.out.println(bt.exist(-8));
-		System.out.println(bt.exist(-15));
-		System.out.println(bt.exist(-6));
-		System.out.println(bt.exist(12));
-		System.out.println(bt.exist(2));
-		System.out.println(bt.exist(6));
-		System.out.println(bt.exist(1));
-		System.out.println(bt.exist(3));
-		System.out.println(bt.exist(8));
-		System.out.println(bt.exist(9));
-		System.out.println(bt.exist(11));
-		System.out.println(bt.exist(13));
-		System.out.println(bt.exist(-20));
-		System.out.println(bt.exist(-10));
-		System.out.println(bt.exist(-7));
-		System.out.println(bt.exist(-5));
-		System.out.println(bt.exist(-1));
-		System.out.println(bt.exist(-2));
-		System.out.println(bt.exist(-3));
-		System.out.println(bt.exist(-4));
-		System.out.println(bt.exist(5));
-
-		System.out.println(bt.search(0));
-
-		bt.printPreOrder();
-
+		}
 	}
 
+	public static void main(String[] Args) {
+		BinaryTree bt = new BinaryTree();
+		Scanner sc = new Scanner(System.in);
+		int x = 0;
+
+		do {
+			System.out.println("\nEscolha uma opcao: ");
+			System.out
+					.println("1: Adicionar um no a arvore \n" + "2: Excluir um no\n" + "3: Verificar se existe um no\n"
+							+ "4: Procurar um no\n" + "5: Printar a arvore em pre ordem\n" + "9: Sair");
+
+			switch (x = sc.nextInt()) {
+			case 1:
+				bt.add(sc.nextInt());
+				break;
+			case 2:
+				bt.remove(sc.nextInt());
+				break;
+			case 3:
+				System.out.println(bt.exist(sc.nextInt()));
+				break;
+			case 4:
+				System.out.println(bt.search(sc.nextInt()));
+				break;
+			case 5:
+				bt.printPreOrder();
+				break;
+			case 9:
+				x = 0;
+				break;
+
+			}
+
+		} while (x != 0);
+
+	}
 }
