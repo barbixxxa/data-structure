@@ -111,28 +111,52 @@ public class BinaryTree {
 
 	}
 
-	public BinaryNode remove(int info) {
-		if (root == null) {
-			return null;
-		} else if (root.getInfo() == info) {
-			if (root.getLeft() == null) { // return ou root = root.getright( ) ?
-				root = root.getRight();
-				return root;
-			} else {
-				this.removalProcess(root); // realiza o processo apartir da raiz
+	public void remove(int info) {
+
+		if (root == null) { // Verifica se a raiz e nula
+
+		} else if (root.getInfo() == info) {// Verifica se o no a ser excluido e
+											// a raiz
+			if (root.getLeft() == null) {// Verifica se o lado esquerdo da raiz
+											// e nulo
+				root = root.getRight();// Exclui a raiz e considera somento seu
+										// lado direito
+			}/* else if (root.getRight() == null) {// Verifica se o lado direito
+													// da raiz e nulo
+				root = root.getLeft();// Exclui a raiz e considera somente seu
+										// lado esquerdo
+			}*/ else {
+				BinaryNode father, aux, fatherAux;
+				father = root;
+				aux = father.getLeft();// Aponta para o maior numero presente no
+										// lado esquerdo da arvore
+				fatherAux = aux;
+				if (aux.getRight() == null) {// Caso o maior no seja o a
+												// esquerda da raiz
+
+					father.setLeft(fatherAux.getLeft());// Adiciona o ramo
+														// esquerdo do no aux no
+														// seu local
+				}
+				while (aux.getRight() != null) {// Caso o no tenha um no maior
+					fatherAux = aux;
+					aux = aux.getRight();
+				} // Aponta o aux para o maior no do lado
+					// esquerdo
+
+				father.setInfo(aux.getInfo());// Atribui o valor do no aux a
+												// raiz
+				fatherAux.setRight(aux.getLeft()); // Exclui o maior no a esquerda
+
 			}
 		} else {
-			// this.search(info); tentar fazer com o metodo search dps
 			BinaryNode father, aux;
 			aux = root;
 			father = aux;
-			while (aux != null && aux.getInfo() != info) {
+			while (aux.getInfo() != info && aux != null) {
 				father = aux;
-				if (info > aux.getInfo()) {
-					aux = aux.getRight();
-				} else {
-					aux = aux.getLeft();
-				}
+				aux = (info > aux.getInfo() ? aux.getRight() : aux.getLeft());
+
 			}
 			if (aux != null && father != null) {
 				if (father.getLeft() == aux) {
@@ -142,26 +166,57 @@ public class BinaryTree {
 				}
 			}
 		}
-		return root;
+		System.out.println(root);
 	}
 
 	private BinaryNode removalProcess(BinaryNode node) {
-		BinaryNode father, aux;
-		father = node;
-		aux = father.getLeft();
-		if (aux != null) {
-			while (aux.getRight() != null) {
-				father = aux;
-				aux = aux.getRight();
-			}
-			node.setInfo(aux.getInfo());// TODO bugando aqui
-			father.setRight(aux.getLeft());
-		} else {
-			node = null;
-		}
+		if (node.getLeft() == null) {// Verifica se o lado esquerdo da raiz
+										// e nulo
+			node = node.getRight();// Exclui a raiz e considera somento seu
+									// lado direito
+		}/* else if (node.getRight() == null) {// Verifica se o lado direito
+												// da raiz e nulo
+			node = node.getLeft();// Exclui a raiz e considera somente seu
+									// lado esquerdo
+		}*/ else {
 
+			BinaryNode father, aux, fatherAux;
+			father = node;
+			aux = father.getLeft();// Aponta para o maior numero presente no
+									// lado esquerdo da arvore
+			fatherAux = aux;
+			if (aux.getRight() == null) {// Caso o maior no seja o a
+											// esquerda da raiz
+
+				father.setLeft(fatherAux.getLeft());// Adiciona o ramo
+													// esquerdo do no aux no
+													// seu local
+			}
+			while (aux.getRight() != null) {// Caso o no tenha um no maior
+				fatherAux = aux;
+				aux = aux.getRight();
+			} // Aponta o aux para o maior no do lado
+				// esquerdo
+
+			father.setInfo(aux.getInfo());// Atribui o valor do no aux a
+											// raiz
+			fatherAux.setRight(aux.getLeft()); // Exclui o maior no a esquerda
+
+		}
 		return node;
 	}
+
+	/*
+	 * private BinaryNode removalProcess(BinaryNode node) { BinaryNode father,
+	 * aux; father = node; if (father.getLeft() != null) { aux =
+	 * father.getLeft(); } else { aux = father.getRight(); } if (aux != null) {
+	 * while (aux.getRight() != null) { father = aux; aux = aux.getRight(); }
+	 * node.setInfo(aux.getInfo()); if (aux.getLeft() != null) {
+	 * father.setRight(aux.getLeft()); } else { aux = null; // faz a exclusao
+	 * mas copia o node e nao exclui }
+	 * 
+	 * } else { node = null; } return node; }
+	 */
 
 	public void printPreOrder() {
 		this.startPrintPreOrder(root);
