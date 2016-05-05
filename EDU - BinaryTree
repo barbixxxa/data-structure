@@ -253,18 +253,18 @@ public class BinaryTree {
 		return (altura(node.getRight()) > altura(node.getLeft()) ? altura(node.getRight()) + 1
 				: altura(node.getLeft()) + 1);
 	}
-
-	public void imprimir() throws Exception {
+//TODO
+	public void printBinaryTree() throws Exception {
 		int size = this.height(root.getInfo());
 		int depth = 0;
 		do {
-			this.preOrdemPrint(root, size, depth);
+			this.preOrdPrint(root, depth);
 			depth++;
 
 		} while (depth != (size + 1));
 	}
 
-	private void preOrdemPrint(BinaryNode node, int size, int depth) throws Exception {
+	private void preOrdPrint(BinaryNode node, int depth) throws Exception {
 
 		BinaryNode aux = node;
 
@@ -273,9 +273,104 @@ public class BinaryTree {
 			if (value == depth) {
 				System.out.println(aux.getInfo());
 			}
-			this.preOrdemPrint(node.getLeft(), size, depth);
-			this.preOrdemPrint(node.getRight(), size, depth);
+			this.preOrdPrint(node.getLeft(), depth);
+			this.preOrdPrint(node.getRight(), depth);
 		}
+	}
+
+	public void printNephews(int info) throws Exception {
+		int depth = this.depth(info);
+		BinaryNode node = this.search(info);
+		this.preOrdPrintCousins(root, node, depth + 1);
+
+	}
+
+	public void printCousins(int info) throws Exception {
+		int depth = this.depth(info);
+		BinaryNode node = this.search(info);
+		BinaryNode father = this.findParents(node);
+		this.preOrdPrintCousins(root, father, depth);
+
+	}
+
+	private void preOrdPrintCousins(BinaryNode root, BinaryNode father, int depth) throws Exception {
+
+		BinaryNode aux = root;
+		if (aux != null && father != null) {
+			int value = this.depth(aux.getInfo());
+			if (father.getLeft() == null && father.getRight() == null) {
+
+			} else if (father.getLeft() == null) {
+				if (father.getRight().getInfo() != aux.getInfo()) {
+					if (value == depth) {
+						System.out.println(aux.getInfo());
+					}
+				}
+			} else if (father.getRight() == null) {
+				if (father.getLeft().getInfo() != aux.getInfo()) {
+					if (value == depth) {
+						System.out.println(aux.getInfo());
+					}
+				}
+			} else if (father.getLeft().getInfo() != aux.getInfo() && father.getRight().getInfo() != aux.getInfo()) {
+				if (value == depth) {
+					System.out.println(aux.getInfo());
+				}
+			}
+			this.preOrdPrintCousins(aux.getLeft(), father, depth);
+			this.preOrdPrintCousins(aux.getRight(), father, depth);
+
+		}
+
+	}
+
+	private BinaryNode findParents(BinaryNode node) throws Exception {
+		if (this.exist(node.getInfo())) {
+			BinaryNode aux = root; // Aponta o no aux para a raiz
+			while (aux != null) { // Verifica se o aux nao e nulo
+				if (aux.getLeft() == null && aux.getRight() == null) {
+					return null;
+				} else if (aux.getInfo() == node.getInfo()) {
+					return null;
+				} else if (aux.getLeft() == null) {
+					if (aux.getRight().getInfo() == node.getInfo()) {
+						return aux;
+					}
+
+				} else if (aux.getRight() == null) {
+					if (aux.getLeft().getInfo() == node.getInfo()) {
+						return aux;
+					}
+				}
+				if (aux.getLeft().getInfo() == node.getInfo() || aux.getRight().getInfo() == node.getInfo()) { // Caso
+																												// o
+																												// valor
+																												// do
+																												// aux
+																												// seja
+																												// igual
+					// ao
+					// valor recebido
+					return aux;
+				} else {
+					if (node.getInfo() < aux.getInfo()) { // Verifica se o valor
+															// recebido
+						// e
+						// menor que o valor do aux
+						aux = aux.getLeft(); // Se for, entao aponta o aux para
+												// a
+												// esquerda do aux anterior
+					} else {
+						aux = aux.getRight();// Caso contrario, aponta o aux
+												// para a
+												// direita do aux anterior
+					}
+				}
+			}
+
+		}
+		return null;
+
 	}
 
 	public static void main(String[] Args) throws Exception {
@@ -288,7 +383,7 @@ public class BinaryTree {
 			System.out.println("1: Adicionar um no a arvore \n" + "2: Excluir um no\n"
 					+ "3: Verificar se existe um no\n" + "4: Procurar um no\n" + "5: Printar a arvore em pre ordem\n"
 					+ "6: Calcular a profundidade\n" + "7: Calcular a altura\n" + "8: Printar a arvore \n"
-							+ "9: Sair");
+					+ "9: Printar os primos do no\n" + "10: Printar os sobrinhos do no\n" + "Outro: Sair");
 
 			switch (x = sc.nextInt()) {
 			case 1:
@@ -309,17 +404,22 @@ public class BinaryTree {
 			case 6:
 				System.out.println(bt.depth(sc.nextInt()));
 				break;
-
 			case 7:
 				System.out.println(bt.height(sc.nextInt()));
 				break;
 			case 8:
-				bt.imprimir();
+				bt.printBinaryTree();
 				break;
 			case 9:
-				x = 0;
+				bt.printCousins(sc.nextInt());
+				break;
+			case 10:
+				bt.printNephews(sc.nextInt());
 				break;
 
+			default:
+				x = 0;
+				break;
 			}
 
 		} while (x != 0);
