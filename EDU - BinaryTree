@@ -121,11 +121,11 @@ public class BinaryTree {
 											// e nulo
 				root = root.getRight();// Exclui a raiz e considera somento seu
 										// lado direito
-			}/* else if (root.getRight() == null) {// Verifica se o lado direito
-													// da raiz e nulo
-				root = root.getLeft();// Exclui a raiz e considera somente seu
-										// lado esquerdo
-			}*/ else {
+			} /*
+				 * else if (root.getRight() == null) {// Verifica se o lado
+				 * direito // da raiz e nulo root = root.getLeft();// Exclui a
+				 * raiz e considera somente seu // lado esquerdo }
+				 */ else {
 				BinaryNode father, aux, fatherAux;
 				father = root;
 				aux = father.getLeft();// Aponta para o maior numero presente no
@@ -146,7 +146,8 @@ public class BinaryTree {
 
 				father.setInfo(aux.getInfo());// Atribui o valor do no aux a
 												// raiz
-				fatherAux.setRight(aux.getLeft()); // Exclui o maior no a esquerda
+				fatherAux.setRight(aux.getLeft()); // Exclui o maior no a
+													// esquerda
 
 			}
 		} else {
@@ -174,11 +175,11 @@ public class BinaryTree {
 										// e nulo
 			node = node.getRight();// Exclui a raiz e considera somento seu
 									// lado direito
-		}/* else if (node.getRight() == null) {// Verifica se o lado direito
-												// da raiz e nulo
-			node = node.getLeft();// Exclui a raiz e considera somente seu
-									// lado esquerdo
-		}*/ else {
+		} /*
+			 * else if (node.getRight() == null) {// Verifica se o lado direito
+			 * // da raiz e nulo node = node.getLeft();// Exclui a raiz e
+			 * considera somente seu // lado esquerdo }
+			 */ else {
 
 			BinaryNode father, aux, fatherAux;
 			father = node;
@@ -206,18 +207,6 @@ public class BinaryTree {
 		return node;
 	}
 
-	/*
-	 * private BinaryNode removalProcess(BinaryNode node) { BinaryNode father,
-	 * aux; father = node; if (father.getLeft() != null) { aux =
-	 * father.getLeft(); } else { aux = father.getRight(); } if (aux != null) {
-	 * while (aux.getRight() != null) { father = aux; aux = aux.getRight(); }
-	 * node.setInfo(aux.getInfo()); if (aux.getLeft() != null) {
-	 * father.setRight(aux.getLeft()); } else { aux = null; // faz a exclusao
-	 * mas copia o node e nao exclui }
-	 * 
-	 * } else { node = null; } return node; }
-	 */
-
 	public void printPreOrder() {
 		this.startPrintPreOrder(root);
 	}
@@ -230,22 +219,76 @@ public class BinaryTree {
 		}
 	}
 
-	public void organize() {
-		if (root != null) {
+	public int depth(int info) throws Exception {
+		int contador = 0;
+		BinaryNode aux = root;
+		while (aux != null) {
+			if (aux.getInfo() == info) {
+				return contador;
+			}
+			contador++;
+			aux = (info > aux.getInfo() ? aux.getRight() : aux.getLeft());
+		}
+		throw new Exception();
 
+	}
+
+	public int height(int info) {
+
+		BinaryNode aux = root;
+		while (aux != null) {
+			if (aux.getInfo() == info) {
+				return altura(aux);
+			}
+
+			aux = (aux.getInfo() < info ? aux.getRight() : aux.getLeft());
+		}
+		return -1;
+	}
+
+	private int altura(BinaryNode node) {
+		if (node == null) {
+			return -1;
+		}
+		return (altura(node.getRight()) > altura(node.getLeft()) ? altura(node.getRight()) + 1
+				: altura(node.getLeft()) + 1);
+	}
+
+	public void imprimir() throws Exception {
+		int size = this.height(root.getInfo());
+		int depth = 0;
+		do {
+			this.preOrdemPrint(root, size, depth);
+			depth++;
+
+		} while (depth != (size + 1));
+	}
+
+	private void preOrdemPrint(BinaryNode node, int size, int depth) throws Exception {
+
+		BinaryNode aux = node;
+
+		if (aux != null) {
+			int value = this.depth(aux.getInfo());
+			if (value == depth) {
+				System.out.println(aux.getInfo());
+			}
+			this.preOrdemPrint(node.getLeft(), size, depth);
+			this.preOrdemPrint(node.getRight(), size, depth);
 		}
 	}
 
-	public static void main(String[] Args) {
+	public static void main(String[] Args) throws Exception {
 		BinaryTree bt = new BinaryTree();
 		Scanner sc = new Scanner(System.in);
 		int x = 0;
 
 		do {
 			System.out.println("\nEscolha uma opcao: ");
-			System.out
-					.println("1: Adicionar um no a arvore \n" + "2: Excluir um no\n" + "3: Verificar se existe um no\n"
-							+ "4: Procurar um no\n" + "5: Printar a arvore em pre ordem\n" + "9: Sair");
+			System.out.println("1: Adicionar um no a arvore \n" + "2: Excluir um no\n"
+					+ "3: Verificar se existe um no\n" + "4: Procurar um no\n" + "5: Printar a arvore em pre ordem\n"
+					+ "6: Calcular a profundidade\n" + "7: Calcular a altura\n" + "8: Printar a arvore \n"
+							+ "9: Sair");
 
 			switch (x = sc.nextInt()) {
 			case 1:
@@ -262,6 +305,16 @@ public class BinaryTree {
 				break;
 			case 5:
 				bt.printPreOrder();
+				break;
+			case 6:
+				System.out.println(bt.depth(sc.nextInt()));
+				break;
+
+			case 7:
+				System.out.println(bt.height(sc.nextInt()));
+				break;
+			case 8:
+				bt.imprimir();
 				break;
 			case 9:
 				x = 0;
