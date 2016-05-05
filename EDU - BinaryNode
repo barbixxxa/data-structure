@@ -329,6 +329,9 @@ public class BinaryTree {
 
 	// TODO
 	public void printBinaryTree() throws Exception {
+		/**
+		 * Metodo para imprimir a arvore desenhada
+		 */
 		int size = this.height(root.getInfo());
 		int depth = 0;
 		do {
@@ -345,11 +348,45 @@ public class BinaryTree {
 		if (aux != null) {
 			int value = this.depth(aux.getInfo());
 			if (value == depth) {
-				System.out.println(aux.getInfo());
+				// System.out.println(aux.getInfo());
+				this.print(aux.getInfo(), this.height(aux.getInfo()));
 			}
 			this.preOrdPrint(node.getLeft(), depth);
 			this.preOrdPrint(node.getRight(), depth);
 		}
+	}
+
+	private void printSpace(int info) {
+		for (int i = 0; i < info; i++)
+			System.out.print(" ");
+	}
+
+	private void printBars(int info) {
+		System.out.print("/");
+		this.printSpace(info);
+		System.out.print("\\");
+	}
+
+	private void print(int info, int height) {
+		int half = (int) Math.pow(2, height);
+		int size = 2 * half;
+
+		for (int lin = 0; lin < half / 2; lin++) {
+			for (int col = 0; col < half - 1; col++) {
+				System.out.print(" ");
+			}
+			System.out.println(info);
+			int spa = half / 2;
+			int spc = 0;
+			do {
+				this.printBars(spc);
+				System.out.println("");
+				spa--;
+			} while (spa > 0);
+			spc++;
+
+		}
+		
 	}
 
 	public void printNephews(int info) throws Exception {
@@ -526,7 +563,8 @@ public class BinaryTree {
 		return null;
 
 	}
-//TODO comentar beccao
+
+	// TODO comentar beccao
 	public void printNephew(int number) throws Exception {
 
 		int profundidade = depth(number);
